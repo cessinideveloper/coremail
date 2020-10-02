@@ -1,0 +1,50 @@
+.topNav{
+    width: 100%;
+    height: 20%;
+    /* border-color: blueviolet;
+    border-style: solid; */
+    display: flex;
+    justify-content: center;
+    min-width: 600px;
+}
+
+.topNavSVG{
+    width: 50%;
+    height: 100%;
+    position: relative;
+}
+
+.redBack{
+    height: 100%;
+    width: 100%;
+    top: -40%;
+    position: absolute;
+    z-index: 18;
+}
+
+.logoText{
+    height: 20%;
+    width: 20%;
+    left: 40%;
+    top: 12%;
+    position: absolute;
+    z-index: 19;
+    
+}
+
+.activeIcon{
+    height: 50%;
+    width: 50%;
+    left:24.8%;
+    top: 37%;
+    position: absolute;
+    z-index: 20;
+}
+
+.activesMail{
+    opacity: 0;
+}
+
+.activesPlane{
+    opacity: 0;
+}

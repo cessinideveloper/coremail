@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/cessini/static/css/main.402abc36.chunk.css",
+    "main.js": "/cessini/static/js/main.90ebc8a4.chunk.js",
+    "main.js.map": "/cessini/static/js/main.90ebc8a4.chunk.js.map",
+    "runtime-main.js": "/cessini/static/js/runtime-main.13b44753.js",
+    "runtime-main.js.map": "/cessini/static/js/runtime-main.13b44753.js.map",
+    "static/js/2.011600f6.chunk.js": "/cessini/static/js/2.011600f6.chunk.js",
+    "static/js/2.011600f6.chunk.js.map": "/cessini/static/js/2.011600f6.chunk.js.map",
+    "index.html": "/cessini/index.html",
+    "precache-manifest.08b9e37fdb7fa9f74337889e5516a60e.js": "/cessini/precache-manifest.08b9e37fdb7fa9f74337889e5516a60e.js",
+    "service-worker.js": "/cessini/service-worker.js",
+    "static/css/main.402abc36.chunk.css.map": "/cessini/static/css/main.402abc36.chunk.css.map",
+    "static/js/2.011600f6.chunk.js.LICENSE.txt": "/cessini/static/js/2.011600f6.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.13b44753.js",
+    "static/js/2.011600f6.chunk.js",
+    "static/css/main.402abc36.chunk.css",
+    "static/js/main.90ebc8a4.chunk.js"
+  ]
+}

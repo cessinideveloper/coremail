@@ -1,0 +1,75 @@
+.subDash{
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.contentholder{
+    flex-grow: 0;
+    flex-shrink: 0;
+    flex-basis: 85%;
+    height: 85%;
+    background-color:whitesmoke;
+    border-radius: 5%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    max-width: 420px;
+}
+
+
+
+.contentButtons{
+    flex-grow: 0;
+    flex-basis: 10%;
+    background-color: rgb(23, 38, 74);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+}
+
+.contentActual{
+    flex-grow: 0;
+    flex-basis: 90%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+.subContentActual{
+    background-color: white;
+    border-radius: 5%;
+    flex-grow: 0;
+    flex-shrink: 0;
+    flex-basis: 90%;
+    height: 90%;
+    max-height: 400px;
+    max-width: 600px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    overflow: auto;
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    align-items: center;
+    align-content:flex-start;
+}
+
+.content{
+    flex-shrink: 0;
+    flex-grow: 0;
+    flex-basis: 10%;
+    background-color: whitesmoke;
+    border-radius: 5%;
+    width: 95%;
+    display: flex;
+    margin-top: 2%;
+    margin-bottom: 2%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
+}
