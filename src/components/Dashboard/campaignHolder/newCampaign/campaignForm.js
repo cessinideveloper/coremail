@@ -10,9 +10,7 @@ const CampForm = ({ newCampaignData, setNewCampaignData }) => {
     useEffect(() => {
         setEmailCSV(store.getState().emailList)
     })
-    // store.subscribe(() => {
 
-    // })
 
     const options = emailCSV ? emailCSV.map(list =>
         <option key={list.id} value={list.id}>{list.name}</option>

@@ -7,9 +7,12 @@ import Google from './googleOAuth';
 import { ButtonPopRightLite } from '../../buttons';
 import store from '../../store/store'
 import { storeUserRequest, getAllEmailList } from '../../actions'
+import { useSpring, animated } from 'react-spring'
 
 const SignIn = ({ userData, setUserName, setPassWord, setEmail, setId }) => {
     const { push } = useHistory(null)
+
+    const [logButtonStyle, setLogButtonStyle] = useSpring(() => ({ transform: "scaleX(1)", text: "Login", backgroundColor: "#365194ff" }))
     const [expand, setExpand] = useState({
         expandEmail: false, expandGoogle: false,
         expandGuest: false, expandUser: true, expandPass: true
@@ -20,11 +23,13 @@ const SignIn = ({ userData, setUserName, setPassWord, setEmail, setId }) => {
     const emailRef = useRef(null)
 
     const login = () => {
+        setLogButtonStyle({ transform: "scaleX(1)", text: "Authorizing...", backgroundColor: "#389685ff" })
         axios.post("https://emailengine2020.herokuapp.com/api-token-auth/",
             {
                 username: userData.username,
                 password: userData.password
             }).then(res => {
+
                 const allUserData = {
                     id: res.data.user_id,
                     username: userData.username,
@@ -35,9 +40,15 @@ const SignIn = ({ userData, setUserName, setPassWord, setEmail, setId }) => {
                 store.dispatch(storeUserRequest(allUserData))
                 store.dispatch(getAllEmailList(res.data.user_id))
                 push("/dashboard")
-            }
-
-            )
+            }).catch(err => {
+                if (err.response) {
+                    setLogButtonStyle({ transform: "scaleX(1)", text: "Not Authorized", backgroundColor: "#a42020ff" })
+                } else if (err.request) {
+                    setLogButtonStyle({ transform: "scaleX(1)", text: "Problem With Network", backgroundColor: "#656565ff" })
+                } else {
+                    setLogButtonStyle({ transform: "scaleX(1)", text: "Some Thing Went Wrong", backgroundColor: "#656565ff" })
+                }
+            })
         console.log(userData.username, userData.password)
     }
 
@@ -238,60 +249,22 @@ const SignIn = ({ userData, setUserName, setPassWord, setEmail, setId }) => {
                 </div>
             </div>
             <div className="loginButtonDiv  signElements">
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="90%"
-                    height="90%"
-                    style={{ position: "absolute" }}
-                    version="1.1"
-                    viewBox="0 0 210.414 55.444"
-                >
-                    <defs>
-                        <filter
-                            id="filter1574"
-                            width="1.131"
-                            height="1.789"
-                            x="-0.066"
-                            y="-0.394"
-                            colorInterpolationFilters="sRGB"
-                        >
-                            <feGaussianBlur stdDeviation="5.094"></feGaussianBlur>
-                        </filter>
-                    </defs>
-                    <g
-                        fillOpacity="1"
-                        strokeWidth="0.295"
-                        transform="translate(-33.132 -90.584)"
-                    >
-                        <rect
-                            width="185.964"
-                            height="30.994"
-                            x="45.357"
-                            y="102.81"
-                            fill="#848484"
-                            stroke="none"
-                            filter="url(#filter1574)"
-                            opacity="1"
-                            rx="5.849"
-                            ry="7.548"
-                        ></rect>
-                        <rect
-                            width="185.964"
-                            height="30.994"
-                            x="45.357"
-                            y="102.81"
-                            fill="#1d4f81"
-                            opacity="1"
-                            rx="5.849"
-                            ry="7.548"
-                        ></rect>
-                    </g>
-                </svg>
+                <animated.div style={logButtonStyle} className="loginButton"
+                    onMouseEnter={() => setLogButtonStyle({ transform: "scaleX(1.1)", text: "Login", backgroundColor: "#5976c1ff" })}
+                    onMouseLeave={() => {
+                        if (logButtonStyle.text.value !== "Authorizing...") {
+                            setLogButtonStyle({ transform: "scaleX(1)", backgroundColor: "#365194ff" })
+                        }
+                    }
+                    }
+                    onClick={() => login()}
+                >{logButtonStyle.text}</animated.div>
+                {/*
                 <p>Login</p>
                 <div className="clickDetector" width="100%" height="100%"
                     onClick={() => login()}
                 >
-                </div>
+                </div> */}
             </div>
             <div className="signUpDiv       signElements">
                 <div className="signUpText subSignUpDiv">

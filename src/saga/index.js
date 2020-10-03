@@ -6,6 +6,7 @@ import store from '../store/store'
 import { ActionTypes, storeAllEmailList, storeAllCampaigns } from '../actions'
 
 
+
 const fetchEmaillist = () => {
     return fetch("https://emailengine2020.herokuapp.com/newemail/").then(re => re.json())
 }
@@ -14,40 +15,47 @@ const fetchCampaings = () => {
     return fetch("https://emailengine2020.herokuapp.com/newcampaign").then(re => re.json())
 }
 
-const postEmaillist = () => {
-    return axios.post("https://emailengine2020.herokuapp.com/newemail/").then(re => re.json())
+const postEmaillist = (data) => {
+    return axios.post("https://emailengine2020.herokuapp.com/newemail/", data).then(re => re.data)
+
+
 }
 
-const postCampaings = () => {
-    return fetch("https://emailengine2020.herokuapp.com/newcampaign").then(re => re.json())
+const postCampaings = (data) => {
+    return fetch("https://emailengine2020.herokuapp.com/newcampaign", data).then(re => re.json())
 }
 
 export function* watchUserSignIn() {
     while (true) {
         const { payload } = yield take(ActionTypes.GET_ALL_EMAIL_LIST)
+        yield fork(watchEmailListAdd)
+        yield fork(watchCampAdd)
         yield fork(getCampaigns, payload)
         yield call(getEmailList, payload)
     }
 }
 
-export function* watchCampAdd() {
+
+
+export function* watchEmailListAdd() {
     while (true) {
+        console.log("watchEmailListAdd")
         const { payload } = yield take(ActionTypes.EMAIL_LIST_ADDED)
-        yield fork(getCampaigns, store.getState().userData.id)
+        const postData = yield call(postEmaillist, payload)
+        console.log(postData)
         yield call(getEmailList, store.getState().userData.id)
     }
 }
 
-export function* watchEmailListAdd() {
+export function* watchCampAdd() {
     while (true) {
-        const { payload } = yield take(ActionTypes.CAMPAIGNS_ADDED)
-        yield fork(getCampaigns, store.getState().userData.id)
-        yield call(getEmailList, store.getState().userData.id)
+        yield take(ActionTypes.CAMPAIGNS_ADDED)
+        yield call(getCampaigns, store.getState().userData.id)
     }
 }
 
 export function* getEmailList(payload) {
-    delay(300)
+    console.log("getEmailList", payload)
     const allEmailList = yield call(fetchEmaillist)
     const filteredEmailList = allEmailList.filter(emailList => emailList.my_customer === payload)
     yield put(storeAllEmailList(filteredEmailList))

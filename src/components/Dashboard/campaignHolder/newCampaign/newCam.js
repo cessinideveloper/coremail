@@ -7,10 +7,11 @@ import EmailEditor from 'react-email-editor'
 import axios from 'axios'
 import store from '../../../../store/store'
 import CampForm from './campaignForm'
-import { writeFile } from 'fs-web'
-
+import { addCampaign } from '../../../../actions'
+import { useSpring, animated } from 'react-spring'
 
 const NewCam = () => {
+    const [sendButtonStyle, setSendButtonStyle] = useSpring(() => ({ transform: "scaleX(1)", text: "Save & Send", backgroundColor: "rgb(23, 38, 74)" }))
     const [newCampaignData, setNewCampaignData] = useState({
         senderName: "",//string
         senderEmail: "",//string
@@ -35,15 +36,15 @@ const NewCam = () => {
                         >
                             Back
                         </div>
-                        <div className="addEmailList topButtonsCam subWrapperCam"
-                            onClick={() =>
+                        <animated.div className="addEmailList topButtonsCam subWrapperCam"
+                            style={sendButtonStyle}
+                            onClick={() => {
+                                setSendButtonStyle({ transform: "scaleX(1.1)", text: "Sending...", backgroundColor: "#ff9f1bff" });
                                 emailEditorRef.current.editor.exportHtml(({ design, html }) => {
                                     setNewCampaignData({ ...newCampaignData, emailBodyJSON: design, emailBodyHTML: html })
                                     setTimeout(() => {
                                         let dataForm = new FormData
                                         let Jda = JSON.stringify(newCampaignData.emailBodyJSON)
-                                        const newHtml = async () => await (writeFile("sendPack.html", html))
-                                        console.log(newHtml())
                                         dataForm.append("name", newCampaignData.campName)
                                         dataForm.append("sender_name", newCampaignData.senderName)
                                         dataForm.append("sender_email", newCampaignData.senderEmail)
@@ -56,35 +57,31 @@ const NewCam = () => {
                                         dataForm.append("attachment", newCampaignData.emailAttachment)//newCampaignData.emailAttachment)
                                         axios.post("https://emailengine2020.herokuapp.com/newcampaign/",
                                             dataForm
-                                        ).catch(er => {
-                                            if (er.response) {
-                                                if (er.response.status === 500) {
-                                                    document.getElementsByClassName("addEmailList topButtonsCam subWrapperCam")[0].click()
+                                        ).then(res => {
+                                            console.log(res.data)
+                                            store.dispatch(addCampaign())
+                                            setSendButtonStyle({ transform: "scaleX(1)", text: "Done!", backgroundColor: "#365194ff" });
+                                            setTimeout(() => { push('/dashboard') }, 200)
+                                        })
+                                            .catch(er => {
+                                                if (er.response) {
+                                                    if (er.response.status === 500) {
+                                                        document.getElementsByClassName("addEmailList topButtonsCam subWrapperCam")[0].click()
+                                                        // axios.post("https://emailengine2020.herokuapp.com/newcampaign/", dataForm).then(res => res.data)
+                                                    }
                                                 }
                                             }
-                                        }
-                                        )
+                                            )
 
-                                        console.log({
-                                            name: newCampaignData.campName,
-                                            sender_name: newCampaignData.senderName,
-                                            sender_email: newCampaignData.senderEmail,
-                                            email_subject: newCampaignData.emailSub,
-                                            my_customer: store.getState().userData.id,
-                                            camp_emails: Number(newCampaignData.emailListCVS),
-                                            email_message: "will see",
-                                            temp_json: design,
-                                            ht: newCampaignData.emailBodyHTML,
-                                            attachment: newCampaignData.emailAttachment
-                                        })
                                     }, 0)
 
                                 })
                             }
+                            }
 
                         >
-                            Save & Send
-                        </div>
+                            {sendButtonStyle.text}
+                        </animated.div>
 
                     </div>
                     <div className="dashBodyMain  subWrapper">

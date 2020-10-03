@@ -1,19 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import Campaign from './campaign'
 import store from '../../../store/store'
+import { cleanup } from '@testing-library/react';
 
 const Campaigns = () => {
     const [camps, setCamps] = useState(null)
 
 
     useEffect(() => {
+        const unsubscribe = store.subscribe(() => setCamps(store.getState().campaigns))
         setCamps(store.getState().campaigns)
         console.log(store.getState().campaigns)
+        const cleanup = () => unsubscribe()
+        return cleanup
     })
 
-    store.subscribe(() => {
-        setCamps(store.getState().campaigns)
-    })
+
 
     return (
         <div className="subContentActual">

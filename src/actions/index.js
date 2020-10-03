@@ -45,9 +45,8 @@ export const storeAllCampaigns = (campaigns) => ({
     payload: campaigns
 });
 
-export const addCampaigns = (data) => ({
+export const addCampaign = () => ({
     type: ActionTypes.CAMPAIGNS_ADDED,
-    payload: data
 });
 
 export const addEmailList = (data) => ({

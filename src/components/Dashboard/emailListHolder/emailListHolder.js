@@ -5,11 +5,12 @@ import EmailList from './emailList'
 const EmailLists = () => {
     const [lists, setLists] = useState(null)
 
-    store.subscribe(() => {
-        setLists(store.getState().emailList)
-    })
+
     useEffect(() => {
+        const unsubscribe = store.subscribe(() => setLists(store.getState().emailList))
         setLists(store.getState().emailList)
+        const cleanup = () => unsubscribe()
+        return cleanup
     })
     return (
         <div className="subContentActual">
