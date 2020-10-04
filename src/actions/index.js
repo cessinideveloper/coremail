@@ -7,7 +7,10 @@ export const ActionTypes = {
     GET_ALL_CAMPAIGNS: "GET_ALL_CAMPAIGNS",
     STORE_ALL_CAMPAIGNS: "STORE_ALL_CAMPAIGNS",
     EMAIL_LIST_ADDED: "EMAIL_LIST_ADDED",
-    CAMPAIGNS_ADDED: "CAMPAIGNS_ADDED"
+    CAMPAIGNS_ADDED: "CAMPAIGNS_ADDED",
+    DELETE_CAMPAIGN: "DELETE_CAMPAIGN",
+    DELETE_EMAIL_LIST: "DELETE_EMAIL_LIST",
+    CAMPAIGN_UPDATED: "CAMPAIGN_UPDATED"
 };
 
 export const storeUserRequest = (payload) => ({
@@ -52,4 +55,19 @@ export const addCampaign = () => ({
 export const addEmailList = (data) => ({
     type: ActionTypes.EMAIL_LIST_ADDED,
     payload: data
+});
+
+export const deleteCamp = (id) => ({
+    type: ActionTypes.DELETE_CAMPAIGN,
+    payload: id
+});
+
+export const deleteEmailList = (id) => ({
+    type: ActionTypes.DELETE_EMAIL_LIST,
+    payload: id
+});
+
+export const updateCampaign = (userId) => ({
+    type: ActionTypes.CAMPAIGN_UPDATED,
+    payload: userId
 });

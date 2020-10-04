@@ -7,11 +7,16 @@ import NavButtons from './navbuttons'
 import NewCam from './campaignHolder/newCampaign/newCam'
 import LoadedCamp from './campaignHolder/newCampaign/loadedCampaign'
 import EmailListUploader from './emailListHolder/emailListUploader'
-
+import { useSpring, animated } from 'react-spring'
 
 const DashBoard = () => {
+
     const { push } = useHistory(null)
+
     const emailEditorRef = useRef(null);
+
+    const [emailButtonStyle, setEmailButtonStyle] = useSpring(() => ({ transform: "translateY(0%)", backgroundColor: "#3a4782ff" }))
+    const [campButtonStyle, setCampButtonStyle] = useSpring(() => ({ transform: "translateY(0%)", backgroundColor: "#3a4782ff" }))
 
     return (
         <div className="dashWrapper">
@@ -19,41 +24,34 @@ const DashBoard = () => {
                 <div className="cessiniHolder  subWrapper">
                     <svg className="cessiniSVG"
                         xmlns="http://www.w3.org/2000/svg"
-                        xmlnsXlink="http://www.w3.org/1999/xlink"
                         width="100%"
                         height="100%"
                         version="1.1"
-                        viewBox="0 0 21.055 8.546"
+                        viewBox="0 0 23.841 8.546"
                     >
-                        <defs>
-                            <radialGradient
-                                id="radialGradient1003"
-                                cx="76.011"
-                                cy="66.752"
-                                r="125"
-                                fx="76.011"
-                                fy="66.752"
-                                gradientTransform="matrix(-.15696 .00018 -.0001 -.08285 12.285 105.117)"
-                                gradientUnits="userSpaceOnUse"
-                                xlinkHref="#linearGradient1001"
-                            ></radialGradient>
-                            <linearGradient id="linearGradient1001">
-                                <stop offset="0" stopColor="#fff" stopOpacity="1"></stop>
-                                <stop offset="1" stopColor="#000" stopOpacity="0.213"></stop>
-                            </linearGradient>
-                        </defs>
-                        <g fillOpacity="1" stroke="none" transform="translate(9.772 -94)">
+                        <g stroke="none" transform="translate(9.772 -94)">
                             <path
-                                fill="url(#radialGradient1003)"
-                                strokeWidth="0.131"
-                                d="M.738 94c-1.396 0-2.78.021-3.795.061h-6.715v2.164a.562.562 0 01.003.052v2.098c.418.724 4.37 3.77 5.235 3.994.913.237 9.632.237 10.545 0 .913-.236 5.272-3.622 5.272-4.095V94.06h-6.75c-1.015-.04-2.399-.06-3.795-.06z"
+                                fill="#c1c1c1"
+                                fillOpacity="0.812"
+                                strokeLinecap="butt"
+                                strokeLinejoin="miter"
+                                strokeOpacity="1"
+                                strokeWidth="1.15"
+                                d="M39.72 0c-5.275 0-10.506.078-14.345.229H0v8.18c.006.064.01.128.01.195v7.927c1.578 2.74 16.517 14.252 19.785 15.098 3.452.894 36.404.894 39.855 0 2.125-.55 9.17-5.605 14.284-9.832 2.938-2.134 5.855-4.39 8.586-7.652 3.133-3.744 6.079-8.9 7.105-11.415C90.651.216 89.784.297 89.35.338l-.434.04-9.338.874V.229h-25.51C50.23.079 44.998 0 39.723 0z"
+                                transform="matrix(.26458 0 0 .26458 -9.772 94)"
                             ></path>
                             <path
-                                fill="#17264a"
-                                strokeWidth="0.125"
-                                d="M.738 94.006c-1.396 0-2.78.019-3.796.055h-6.714v1.97a.465.465 0 01.003.047v1.909c.418.66 4.37 3.432 5.235 3.636.913.215 9.632.215 10.545 0 .913-.215 5.272-3.297 5.272-3.728v-3.834h-6.75a114.66 114.66 0 00-3.795-.055z"
+                                fill="#3f4e8eff"
+                                fillOpacity="1"
+                                strokeWidth="0.473"
+                                d="M39.72.02c-5.275 0-10.506.072-14.345.209H0v7.443c.006.059.01.12.01.18v7.214c1.578 2.493 16.517 12.97 19.785 13.74 3.452.814 36.404.814 39.855 0 3.276-.771 18.273-11.296 19.793-13.757a34.531 34.531 0 001.598-1.477c3.468-3.435 6.883-8.295 8.139-10.703 1.256-2.407.385-2.408-.051-2.408h-9.55V.229h-25.51c-3.84-.137-9.07-.21-14.346-.21z"
+                                transform="matrix(.26458 0 0 .26458 -9.772 94)"
                             ></path>
-                            <g fill="#fff" transform="matrix(.05103 0 0 .05103 -5.304 98.105)">
+                            <g
+                                fill="#fff"
+                                fillOpacity="1"
+                                transform="matrix(.05103 0 0 .05103 -5.304 98.105)"
+                            >
                                 <path
                                     strokeLinecap="butt"
                                     strokeLinejoin="miter"
@@ -108,7 +106,8 @@ const DashBoard = () => {
                                     whiteSpace: "pre",
                                 }}
                                 fill="#fff"
-                                style={{ ariaLabel: "Mail" }}
+                                fillOpacity="1"
+                                ariaLabel="Mail"
                                 fontFamily="Cambria"
                                 fontSize="40"
                                 fontStretch="normal"
@@ -162,12 +161,22 @@ const DashBoard = () => {
                     </svg>
                 </div>
                 <div className="contentHolder  subWrapper">
-                    <div className="MyEmailList sideButtons"
-                        onClick={() => push("/dashboard/newemaillist")}
-                    >Add Email Lists</div>
-                    <div className="MyCampaign  sideButtons"
-                        onClick={() => push("/dashboard/newcamp")}
-                    > Create Campaign</div>
+                    <animated.div className="MyEmailList sideButtons"
+                        style={emailButtonStyle}
+                        onClick={() => {
+                            setEmailButtonStyle({ transform: "translateY(0%)", backgroundColor: "#41a56eff" })
+                            setCampButtonStyle({ transform: "translateY(0%)", backgroundColor: "#3a4782ff" })
+                            push("/dashboard/newemaillist")
+                        }}
+                    >Add Email Lists</animated.div>
+                    <animated.div className="MyCampaign  sideButtons"
+                        style={campButtonStyle}
+                        onClick={() => {
+                            setEmailButtonStyle({ transform: "translateY(200%)", backgroundColor: "#3a4782ff" })
+                            setCampButtonStyle({ transform: "translateY(-200%)", backgroundColor: "#41a56eff" })
+                            push("/dashboard/newcamp")
+                        }}
+                    > Create Campaign</animated.div>
                 </div>
             </div>
             <div className="dashBody      subWrapper">

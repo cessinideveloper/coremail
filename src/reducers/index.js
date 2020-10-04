@@ -22,6 +22,8 @@ const storeUser = (user = initialUser, action) => {
 const storeCampaign = (campaigns = [], action) => {
     if (action.type === ActionTypes.STORE_ALL_CAMPAIGNS) {
         return action.payload
+    } else if (action.type === ActionTypes.DELETE_CAMPAIGN) {
+        return campaigns.filter(camp => camp.id !== action.payload)
     }
     return campaigns
 };
@@ -36,6 +38,8 @@ const loadCampaign = (loadedCamp = { campId: 0, campName: "" }, action) => {
 const storeEmailList = (emailList = [], action) => {
     if (action.type === ActionTypes.STORE_ALL_EMAIL_LIST) {
         return action.payload
+    } else if (action.type === ActionTypes.DELETE_EMAIL_LIST) {
+        return emailList.filter(list => list.id !== action.payload)
     }
     return emailList
 };

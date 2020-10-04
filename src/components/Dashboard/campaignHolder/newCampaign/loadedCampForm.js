@@ -1,18 +1,24 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useHistory } from 'react-router-dom'
 import store from '../../../../store/store'
-import { storeCampaign } from '../../../../actions'
+import { storeCampaign, updateCampaign } from '../../../../actions'
+import { useSpring, animated } from 'react-spring'
+import axios from 'axios'
 
-const LoadedCampForm = ({ newCampaignData, setNewCampaignData, loadTheTemplate }) => {
+const LoadedCampForm = ({ newCampaignData, setNewCampaignData, loadTheTemplate, loaded, setLoaded }) => {
+
+    const [upNexitButtonStyle, setUpNexitButtonStyle] = useSpring(() => ({ text: "Update & Exit", backgroundColor: "#365194ff" }))
+    const [upNsendButtonStyle, setUpNsendButtonStyle] = useSpring(() => ({ text: "Update & Send", backgroundColor: "#365194ff" }))
 
     useEffect(() => {
-        console.log(store.getState())
         const loadedCamp = store.getState().loadedCampaign ? store.getState().loadedCampaign.campId : null
-        console.log(loadedCamp)
         if (loadedCamp) {
-            const first = store.getState().campaigns.filter(camp => camp.id === loadedCamp)
-            setNewCampaignData(first[0])
-            console.log("reached", store.getState().campaigns.filter(camp => camp.id === loadedCamp))
+            if (!loaded) {
+                console.log("getting into if")
+                const first = store.getState().campaigns.filter(camp => camp.id === loadedCamp)
+                setNewCampaignData(first[0])
+                setLoaded(true)
+            }
         }
     }, [])
 
@@ -94,20 +100,66 @@ const LoadedCampForm = ({ newCampaignData, setNewCampaignData, loadTheTemplate }
                         </div>
                     </form>
                     <div className="formButtons Fields">
-                        <div className="sendButton Fields formButtonsCam"
-
-                        >
-                            Update & Send{/* {update ? "Update & Send" : "Save & Send"} */}
-                        </div>
-                        <div className="createButton Fields formButtonsCam"
+                        <animated.div className="sendButton Fields formButtonsCam"
+                            style={upNsendButtonStyle}
                             onClick={() => {
-                                store.dispatch(storeCampaign(newCampaignData));
-                                push("/dashboard")
-                            }
-                            }
+                                setUpNsendButtonStyle({ text: "Sending...", backgroundColor: "#389685ff" })
+                                setTimeout(() => { setUpNsendButtonStyle({ text: "Sent!", backgroundColor: "#656565ff" }) }, 1000)
+                                setTimeout(() => { push('/dashboard') }, 1300)
+                            }}
                         >
-                            Update & Exit {/* {update ? "Update & Exit" : "Save & Exit"} */}
-                        </div>
+                            {upNsendButtonStyle.text}{/* {update ? "Update & Send" : "Save & Send"} */}
+                        </animated.div>
+                        <animated.div className="createButton Fields formButtonsCam"
+                            style={upNexitButtonStyle}
+                            onClick={() => {
+                                setUpNexitButtonStyle({ transform: "scaleX(1)", text: "Updating...", backgroundColor: "#389685ff" })
+                                setTimeout(() => {
+                                    //console.log(newCampaignData.ht)
+                                    let dataForm = new FormData
+                                    let Jda = JSON.stringify(newCampaignData.temp_json)
+                                    dataForm.append("name", newCampaignData.name)
+                                    dataForm.append("sender_name", newCampaignData.sender_name)
+                                    dataForm.append("sender_email", newCampaignData.sender_email)
+                                    dataForm.append("email_subject", newCampaignData.email_subject)
+                                    dataForm.append("my_customer", store.getState().userData.id)
+                                    dataForm.append("camp_emails", 6)
+                                    dataForm.append("email_message", "will see")
+                                    dataForm.append("temp_json", Jda)
+                                    dataForm.append("ht", newCampaignData.ht)
+                                    if (typeof (!newCampaignData.attachment) === 'string') {
+                                        dataForm.append("attachment", newCampaignData.attachment)
+                                    }
+                                    axios.put(`https://emailengine2020.herokuapp.com/camprud/${store.getState().loadedCampaign.campId}/`,
+                                        dataForm
+                                    ).then(res => {
+                                        // console.log(res)
+                                        // console.log("reached res")
+                                        store.dispatch(updateCampaign(store.getState().userData.id))
+                                        setTimeout(() => {
+                                            setUpNexitButtonStyle({ text: "Done!", backgroundColor: "#365194ff" })
+
+                                        }, 1000)
+                                        setTimeout(() => { push('/dashboard') }, 1300)
+                                    })
+                                        .catch(er => {
+                                            console.log(er)
+                                            console.log("reached er")
+                                            if (er.response) {
+                                                //console.log(er.response.data)
+                                                // if (er.response.status === 500) {
+                                                //     document.getElementsByClassName("addEmailList topButtonsCam subWrapperCam")[0].click()
+                                                //     // axios.post("https://emailengine2020.herokuapp.com/newcampaign/", dataForm).then(res => res.data)
+                                                // }
+                                            }
+                                        }
+                                        )
+
+                                }, 0)
+                            }}
+                        >
+                            {upNexitButtonStyle.text}
+                        </animated.div>
                     </div>
                 </div>
             </div>

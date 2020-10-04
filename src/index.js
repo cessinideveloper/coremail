@@ -6,14 +6,14 @@ import * as serviceWorker from './serviceWorker';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import reducers from './reducers'
-import { MemoryRouter, Route, Switch, withRouter } from 'react-router-dom'
+import { HashRouter, MemoryRouter, Route, Switch, withRouter } from 'react-router-dom'
 
 ReactDOM.render(
   <React.Fragment>
     {/* <Provider store={createStore(reducers)}> */}
-    <MemoryRouter>
+    <HashRouter>
       <App></App>
-    </MemoryRouter>
+    </HashRouter>
     {/* </Provider> */}
   </React.Fragment>,
   document.getElementById('root')

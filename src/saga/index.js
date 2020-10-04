@@ -30,6 +30,7 @@ export function* watchUserSignIn() {
         const { payload } = yield take(ActionTypes.GET_ALL_EMAIL_LIST)
         yield fork(watchEmailListAdd)
         yield fork(watchCampAdd)
+        yield fork(updateCampaigns)
         yield fork(getCampaigns, payload)
         yield call(getEmailList, payload)
     }
@@ -55,7 +56,6 @@ export function* watchCampAdd() {
 }
 
 export function* getEmailList(payload) {
-    console.log("getEmailList", payload)
     const allEmailList = yield call(fetchEmaillist)
     const filteredEmailList = allEmailList.filter(emailList => emailList.my_customer === payload)
     yield put(storeAllEmailList(filteredEmailList))
@@ -67,6 +67,21 @@ export function* getCampaigns(payload) {
     const filteredCampaigns = allCampaigns.filter(camp => camp.my_customer === payload)
     yield put(storeAllCampaigns(filteredCampaigns))
 }
+
+export function* updateCampaigns() {
+    while (true) {
+        console.log("updateCampaigns ")
+        const { payload } = yield take(ActionTypes.CAMPAIGN_UPDATED)
+        console.log("CAMPAIGN_UPDATED ")
+        const allCampaigns = yield call(fetchCampaings)
+        const filteredCampaigns = allCampaigns.filter(camp => camp.my_customer === payload)
+        console.log("reached here")
+        yield put(storeAllCampaigns(filteredCampaigns))
+    }
+
+}
+
+
 
 
 

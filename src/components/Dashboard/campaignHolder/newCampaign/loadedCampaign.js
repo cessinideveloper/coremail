@@ -20,8 +20,8 @@ const LoadedCamp = () => {
         emailBodyHTML: null,//HTMLobject 
     }
     const [newCampaignData, setNewCampaignData] = useState(initialState)
-    const [loadFunc, setloadFunc] = useState(null)
 
+    const [loaded, setLoaded] = useState(false)
 
     const { push } = useHistory(null)
 
@@ -55,7 +55,7 @@ const LoadedCamp = () => {
                                 console.log(emailEditorRef.current)
                                 emailEditorRef.current.editor.exportHtml(({ design, html }) => {
 
-                                    setNewCampaignData({ ...newCampaignData, emailBodyJSON: design, emailBodyHTML: html })
+                                    setNewCampaignData({ ...newCampaignData, temp_json: design, ht: html })
 
                                     push("/dashboard/loadedcamp")
                                 })
@@ -63,7 +63,7 @@ const LoadedCamp = () => {
                             }
 
                         >
-                            Save & Next
+                            Update & Next
                         </div>
 
                     </div>
@@ -77,6 +77,8 @@ const LoadedCamp = () => {
                 <LoadedCampForm newCampaignData={newCampaignData}
                     setNewCampaignData={setNewCampaignData}
                     loadTheTemplate={loadTheTemplate}
+                    loaded={loaded}
+                    setLoaded={setLoaded}
                 ></LoadedCampForm>}>
             </Route>
         </Switch>

@@ -15,7 +15,7 @@ const EmailLists = () => {
     return (
         <div className="subContentActual">
             {lists ? lists.map(list =>
-                <EmailList key={list.id} campId={list.id} listName={list.name} file={list.upload_file} ></EmailList>
+                <EmailList key={list.id} emailId={list.id} listName={list.name} file={list.upload_file} ></EmailList>
             ) : null}
         </div>
     );

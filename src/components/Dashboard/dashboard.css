@@ -18,10 +18,12 @@
 }
 
 .sideButtons{
-  width: 100%;
+  width: 110%;
+  position: relative;
+  left: -2%;
   flex-basis: 10%;
   background-color: rgb(23, 38, 74);
-  border-radius: 5%;
+  border-radius: 15px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   color: white;
   display: flex;
@@ -29,14 +31,17 @@
   align-items: center;
   margin-top: 10%;
   margin-bottom: 10%;
+  font-size: 14px;
 }
 
 .cessiniHolder {
   flex-grow: 1;
 }
 .cessiniSVG {
+  width: 120%;
   position: relative;
   top: -10%;
+  left: -3%;
 }
 .contentHolder {
   flex-grow: 14;

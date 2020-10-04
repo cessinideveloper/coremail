@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import './campaign.css'
 import store from '../../../store/store'
-import { loadCampaign } from '../../../actions'
+import { loadCampaign, deleteCamp } from '../../../actions'
 import { useHistory } from 'react-router-dom'
+import axios from 'axios';
 
 const Campaign = ({ campId, campName }) => {
 
@@ -22,6 +23,21 @@ const Campaign = ({ campId, campName }) => {
                     }}
                 >
                     Load
+                </div>
+                <div className="deleteButton loadButton"
+                    onClick={() => {
+                        axios.delete(`https://emailengine2020.herokuapp.com/camprud/${campId}/`)
+                            .then(
+                                res => {
+                                    console.log(res)
+                                    store.dispatch(deleteCamp(campId))
+                                }
+                            )
+
+
+                    }}
+                >
+                    Delete
                 </div>
             </div>
         </div>

@@ -12,6 +12,7 @@ import { useSpring, animated } from 'react-spring'
 
 const NewCam = () => {
     const [sendButtonStyle, setSendButtonStyle] = useSpring(() => ({ transform: "scaleX(1)", text: "Save & Send", backgroundColor: "rgb(23, 38, 74)" }))
+    const [saveNexitButtonStyle, setSaveNexitButtonStyle] = useSpring(() => ({ transform: "scaleX(1)", text: "Save & Exit", backgroundColor: "rgb(23, 38, 74)" }))
     const [newCampaignData, setNewCampaignData] = useState({
         senderName: "",//string
         senderEmail: "",//string
@@ -36,10 +37,10 @@ const NewCam = () => {
                         >
                             Back
                         </div>
-                        <animated.div className="addEmailList topButtonsCam subWrapperCam"
+                        <animated.div className="topButtonsCam subWrapperCam"
                             style={sendButtonStyle}
                             onClick={() => {
-                                setSendButtonStyle({ transform: "scaleX(1.1)", text: "Sending...", backgroundColor: "#ff9f1bff" });
+                                setSendButtonStyle({ transform: "scaleX(1)", text: "Sending...", backgroundColor: "#ff9f1bff" });
                                 emailEditorRef.current.editor.exportHtml(({ design, html }) => {
                                     setNewCampaignData({ ...newCampaignData, emailBodyJSON: design, emailBodyHTML: html })
                                     setTimeout(() => {
@@ -81,6 +82,52 @@ const NewCam = () => {
 
                         >
                             {sendButtonStyle.text}
+                        </animated.div>
+                        <animated.div className="topButtonsCam subWrapperCam"
+                            style={saveNexitButtonStyle}
+                            onClick={() => {
+                                setSaveNexitButtonStyle({ transform: "scaleX(1)", text: "Sending...", backgroundColor: "#ff9f1bff" });
+                                emailEditorRef.current.editor.exportHtml(({ design, html }) => {
+                                    setNewCampaignData({ ...newCampaignData, emailBodyJSON: design, emailBodyHTML: html })
+                                    setTimeout(() => {
+                                        let dataForm = new FormData
+                                        let Jda = JSON.stringify(newCampaignData.emailBodyJSON)
+                                        dataForm.append("name", newCampaignData.campName)
+                                        dataForm.append("sender_name", newCampaignData.senderName)
+                                        dataForm.append("sender_email", newCampaignData.senderEmail)
+                                        dataForm.append("email_subject", newCampaignData.emailSub)
+                                        dataForm.append("my_customer", store.getState().userData.id)
+                                        dataForm.append("camp_emails", Number(newCampaignData.emailListCVS))
+                                        dataForm.append("email_message", "will see")
+                                        dataForm.append("temp_json", Jda)
+                                        dataForm.append("ht", html)
+                                        dataForm.append("attachment", newCampaignData.emailAttachment)//newCampaignData.emailAttachment)
+                                        axios.post("https://emailengine2020.herokuapp.com/newcampaign/",
+                                            dataForm
+                                        ).then(res => {
+                                            console.log(res.data)
+                                            store.dispatch(addCampaign())
+                                            setSendButtonStyle({ transform: "scaleX(1)", text: "Done!", backgroundColor: "#365194ff" });
+                                            setTimeout(() => { push('/dashboard') }, 200)
+                                        })
+                                            .catch(er => {
+                                                if (er.response) {
+                                                    if (er.response.status === 500) {
+                                                        document.getElementsByClassName("addEmailList topButtonsCam subWrapperCam")[0].click()
+                                                        // axios.post("https://emailengine2020.herokuapp.com/newcampaign/", dataForm).then(res => res.data)
+                                                    }
+                                                }
+                                            }
+                                            )
+
+                                    }, 0)
+
+                                })
+                            }
+                            }
+
+                        >
+                            {saveNexitButtonStyle.text}
                         </animated.div>
 
                     </div>

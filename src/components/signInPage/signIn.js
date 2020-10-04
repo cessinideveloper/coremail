@@ -252,7 +252,7 @@ const SignIn = ({ userData, setUserName, setPassWord, setEmail, setId }) => {
                 <animated.div style={logButtonStyle} className="loginButton"
                     onMouseEnter={() => setLogButtonStyle({ transform: "scaleX(1.1)", text: "Login", backgroundColor: "#5976c1ff" })}
                     onMouseLeave={() => {
-                        if (logButtonStyle.text.value !== "Authorizing...") {
+                        if (logButtonStyle.text.value === "Login") {
                             setLogButtonStyle({ transform: "scaleX(1)", backgroundColor: "#365194ff" })
                         }
                     }
