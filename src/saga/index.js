@@ -57,14 +57,16 @@ export function* watchCampAdd() {
 
 export function* getEmailList(payload) {
     const allEmailList = yield call(fetchEmaillist)
-    const filteredEmailList = allEmailList.filter(emailList => emailList.my_customer === payload)
+    console.log(allEmailList)
+    const filteredEmailList = allEmailList.filter(emailList => emailList.my_customer == payload)
+    console.log(filteredEmailList)
     yield put(storeAllEmailList(filteredEmailList))
 }
 
 export function* getCampaigns(payload) {
     delay(300)
     const allCampaigns = yield call(fetchCampaings)
-    const filteredCampaigns = allCampaigns.filter(camp => camp.my_customer === payload)
+    const filteredCampaigns = allCampaigns.filter(camp => camp.my_customer == payload)
     yield put(storeAllCampaigns(filteredCampaigns))
 }
 

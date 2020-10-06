@@ -11,9 +11,9 @@ import { HashRouter, MemoryRouter, Route, Switch, withRouter } from 'react-route
 ReactDOM.render(
   <React.Fragment>
     {/* <Provider store={createStore(reducers)}> */}
-    <HashRouter>
+    <MemoryRouter>
       <App></App>
-    </HashRouter>
+    </MemoryRouter>
     {/* </Provider> */}
   </React.Fragment>,
   document.getElementById('root')

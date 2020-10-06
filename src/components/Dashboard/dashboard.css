@@ -68,6 +68,7 @@
 .dashBodyMain {
   flex-grow: 14;
   display: flex;
+  
 }
 
 .midButtons {

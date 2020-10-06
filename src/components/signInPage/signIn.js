@@ -21,6 +21,24 @@ const SignIn = ({ userData, setUserName, setPassWord, setEmail, setId }) => {
     const googleRef = useRef(null)
     const guestRef = useRef(null)
     const emailRef = useRef(null)
+    useEffect(() => {
+        if (localStorage.getItem("id")) { allreadyLoggedIn() }
+    })
+
+
+    const allreadyLoggedIn = () => {
+        const allUserData = {
+            id: localStorage.getItem("id"),
+            username: localStorage.getItem("username"),
+            // password: userData.password,
+            email: localStorage.getItem("email"),
+            token: localStorage.getItem("token"),
+
+        }
+        store.dispatch(storeUserRequest(allUserData))
+        store.dispatch(getAllEmailList(localStorage.getItem("id")))
+        push("/dashboard")
+    }
 
     const login = () => {
         setLogButtonStyle({ transform: "scaleX(1)", text: "Authorizing...", backgroundColor: "#389685ff" })
@@ -33,10 +51,14 @@ const SignIn = ({ userData, setUserName, setPassWord, setEmail, setId }) => {
                 const allUserData = {
                     id: res.data.user_id,
                     username: userData.username,
-                    password: userData.password,
+                    // password: userData.password,
                     email: res.data.email,
                     token: res.data.token,
                 }
+                localStorage.setItem("id", allUserData.id)
+                localStorage.setItem("username", allUserData.username)
+                localStorage.setItem("email", allUserData.email)
+                localStorage.setItem("token", allUserData.token)
                 store.dispatch(storeUserRequest(allUserData))
                 store.dispatch(getAllEmailList(res.data.user_id))
                 push("/dashboard")
@@ -49,7 +71,7 @@ const SignIn = ({ userData, setUserName, setPassWord, setEmail, setId }) => {
                     setLogButtonStyle({ transform: "scaleX(1)", text: "Some Thing Went Wrong", backgroundColor: "#656565ff" })
                 }
             })
-        console.log(userData.username, userData.password)
+        // console.log(userData.username, userData.password)
     }
 
 

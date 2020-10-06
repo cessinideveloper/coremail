@@ -20,6 +20,44 @@
     max-width: 420px;
 }
 
+.topNavLander {
+    flex-grow: 1;
+    flex-basis: 0;
+    background-color: whitesmoke;
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.2), 0 4px 10px 0 rgba(0, 0, 0, 0.19);
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.logOff{
+    flex-wrap: nowrap;
+    height: 80%;
+    margin-right:3% ;
+    box-shadow: 0 0 5px 0  rgba(0, 0, 0, 0.4);
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    color: white;
+    max-height: 40px;
+    border-radius: 20px;
+    
+}
+
+/* .logOff>svg{
+
+} */
+.logOff>p{
+    flex-grow: 5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    font-size: 14px;
+    
+}
+
 
 
 .contentButtons{
