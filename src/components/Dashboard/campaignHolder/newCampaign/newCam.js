@@ -37,7 +37,7 @@ const NewCam = () => {
                         >
                             Back
                         </div>
-                        <animated.div className="topButtonsCam subWrapperCam"
+                        <animated.div className="topButtonsCam subWrapperCam saveAndsend"
                             style={sendButtonStyle}
                             onClick={() => {
                                 setSendButtonStyle({ transform: "scaleX(1)", text: "Sending...", backgroundColor: "#ff9f1bff" });
@@ -59,15 +59,17 @@ const NewCam = () => {
                                         axios.post("https://emailengine2020.herokuapp.com/newcampaign/",
                                             dataForm
                                         ).then(res => {
-                                            console.log(res.data)
+                                            console.log(res.data, res.data.id)
                                             store.dispatch(addCampaign())
                                             setSendButtonStyle({ transform: "scaleX(1)", text: "Done!", backgroundColor: "#365194ff" });
                                             setTimeout(() => { push('/dashboard') }, 200)
+                                            axios.post(`https://emailengine2020.herokuapp.com/campid/${res.data.id}/`)
                                         })
                                             .catch(er => {
                                                 if (er.response) {
                                                     if (er.response.status === 500) {
-                                                        document.getElementsByClassName("addEmailList topButtonsCam subWrapperCam")[0].click()
+                                                        setSendButtonStyle({ transform: "scaleX(1)", text: "Wait Trying Again", backgroundColor: "#a42020ff" });
+                                                        document.getElementsByClassName("saveAndsend")[0].click()
                                                         // axios.post("https://emailengine2020.herokuapp.com/newcampaign/", dataForm).then(res => res.data)
                                                     }
                                                 }
@@ -77,13 +79,13 @@ const NewCam = () => {
                                     }, 0)
 
                                 })
-                            }
-                            }
+                            }}
+
 
                         >
                             {sendButtonStyle.text}
                         </animated.div>
-                        <animated.div className="topButtonsCam subWrapperCam"
+                        <animated.div className="topButtonsCam subWrapperCam saveAndExit"
                             style={saveNexitButtonStyle}
                             onClick={() => {
                                 setSaveNexitButtonStyle({ transform: "scaleX(1)", text: "Sending...", backgroundColor: "#ff9f1bff" });
@@ -113,7 +115,8 @@ const NewCam = () => {
                                             .catch(er => {
                                                 if (er.response) {
                                                     if (er.response.status === 500) {
-                                                        document.getElementsByClassName("addEmailList topButtonsCam subWrapperCam")[0].click()
+                                                        alert(er.response.status)
+                                                        //document.getElementsByClassName("sendAndExit")[0].click()
                                                         // axios.post("https://emailengine2020.herokuapp.com/newcampaign/", dataForm).then(res => res.data)
                                                     }
                                                 }

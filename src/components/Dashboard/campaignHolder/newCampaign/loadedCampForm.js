@@ -6,6 +6,7 @@ import { useSpring, animated } from 'react-spring'
 import axios from 'axios'
 
 const LoadedCampForm = ({ newCampaignData, setNewCampaignData, loadTheTemplate, loaded, setLoaded }) => {
+    const [emailCSV, setEmailCSV] = useState([])
 
     const [upNexitButtonStyle, setUpNexitButtonStyle] = useSpring(() => ({ text: "Update & Exit", backgroundColor: "#365194ff" }))
     const [upNsendButtonStyle, setUpNsendButtonStyle] = useSpring(() => ({ text: "Update & Send", backgroundColor: "#365194ff" }))
@@ -20,7 +21,13 @@ const LoadedCampForm = ({ newCampaignData, setNewCampaignData, loadTheTemplate, 
                 setLoaded(true)
             }
         }
+        setEmailCSV(store.getState().emailList)
     }, [])
+
+    const options = emailCSV ? emailCSV.map(list =>
+        <option key={list.id} value={list.id}>{list.name}</option>
+    ) : null;
+
 
     const camNameRef = useRef(null)
     const SenderNameRef = useRef(null)
@@ -77,17 +84,28 @@ const LoadedCampForm = ({ newCampaignData, setNewCampaignData, loadTheTemplate, 
                             <div className="subFieldLong Fields">
                                 <label htmlFor="emailList">Email Attachment</label>
 
-                                <input type="file" id="emailList" files={[newCampaignData.attachment]}
+                                <input type="file" id="emailList"
                                     onChange={e => setNewCampaignData({ ...newCampaignData, attachment: e.target.files[0] })}
                                 />
                             </div>
+                            <div className="subField Fields">
+                                <label htmlFor="emailLists">Email List</label>
+                                {console.log(newCampaignData.camp_emails)}
+                                <select id="emailLists" name="emailLists" value={newCampaignData.camp_emails}
+                                    onChange={e => {
+                                        console.log("hey hey", newCampaignData.camp_emails)
+                                        setNewCampaignData({ ...newCampaignData, camp_emails: e.target.value })
+                                    }
+                                    }
+                                >
+                                    {options}
+                                </select>
+                            </div>
                             <div className="subFieldLong Fields">
                                 <label htmlFor="emailBody">Email Body</label>
-                                {/* <select id="camName" name="camName">
-                                <option value="NoEmailList">Please Create Email List</option>
-                            </select> */}
                                 <div id="emailBody" className="desBody Fields formButtonsCam"
                                     onClick={() => {
+
                                         push("/dashboard/loadedcamp/maileditor")
                                         setTimeout(() => {
                                             loadTheTemplate(newCampaignData.temp_json)
@@ -103,9 +121,58 @@ const LoadedCampForm = ({ newCampaignData, setNewCampaignData, loadTheTemplate, 
                         <animated.div className="sendButton Fields formButtonsCam"
                             style={upNsendButtonStyle}
                             onClick={() => {
-                                setUpNsendButtonStyle({ text: "Sending...", backgroundColor: "#389685ff" })
-                                setTimeout(() => { setUpNsendButtonStyle({ text: "Sent!", backgroundColor: "#656565ff" }) }, 1000)
-                                setTimeout(() => { push('/dashboard') }, 1300)
+                                //Updating
+                                setUpNsendButtonStyle({ transform: "scaleX(1)", text: "Updating...", backgroundColor: "#389685ff" })
+                                setTimeout(() => {
+                                    //console.log(newCampaignData.ht)
+                                    let dataForm = new FormData
+                                    let Jda = JSON.stringify(newCampaignData.temp_json)
+                                    dataForm.append("name", newCampaignData.name)
+                                    dataForm.append("sender_name", newCampaignData.sender_name)
+                                    dataForm.append("sender_email", newCampaignData.sender_email)
+                                    dataForm.append("email_subject", newCampaignData.email_subject)
+                                    dataForm.append("my_customer", store.getState().userData.id)
+                                    dataForm.append("camp_emails", newCampaignData.camp_emails)
+                                    dataForm.append("email_message", "will see")
+                                    dataForm.append("temp_json", Jda)
+                                    dataForm.append("ht", newCampaignData.ht)
+                                    if (typeof (!newCampaignData.attachment) === 'string') {
+                                        dataForm.append("attachment", newCampaignData.attachment)
+                                    }
+                                    axios.put(`https://emailengine2020.herokuapp.com/camprud/${store.getState().loadedCampaign.campId}/`,
+                                        dataForm
+                                    ).then(res => {
+                                        console.log(res)
+                                        console.log("reached res")
+
+                                        store.dispatch(updateCampaign(store.getState().userData.id))
+
+                                        setUpNsendButtonStyle({ text: "Sending...", backgroundColor: "#389685ff" })
+                                        axios.post(`https://emailengine2020.herokuapp.com/campid/${store.getState().loadedCampaign.campId}/`).then(res => {
+                                            setTimeout(() => { setUpNsendButtonStyle({ text: "Sent!", backgroundColor: "#656565ff" }) }, 1000)
+                                            setTimeout(() => { push('/dashboard') }, 1300)
+                                        })
+                                    })
+                                        .catch(er => {
+                                            console.log(er)
+                                            console.log("reached er")
+                                            if (er.response) {
+                                                console.log(er.response.data)
+                                                // if (er.response.status === 500) {
+                                                //     document.getElementsByClassName("addEmailList topButtonsCam subWrapperCam")[0].click()
+                                                //     // axios.post("https://emailengine2020.herokuapp.com/newcampaign/", dataForm).then(res => res.data)
+                                                // }
+                                            }
+                                        }
+                                        )
+
+                                }, 0)
+                                //only send
+                                // setUpNsendButtonStyle({ text: "Sending...", backgroundColor: "#389685ff" })
+                                // axios.post(`https://emailengine2020.herokuapp.com/campid/${newCampaignData.id}/`).then(res => {
+                                //     setTimeout(() => { setUpNsendButtonStyle({ text: "Sent!", backgroundColor: "#656565ff" }) }, 1000)
+                                //     setTimeout(() => { push('/dashboard') }, 1300)
+                                // })
                             }}
                         >
                             {upNsendButtonStyle.text}{/* {update ? "Update & Send" : "Save & Send"} */}
@@ -123,7 +190,7 @@ const LoadedCampForm = ({ newCampaignData, setNewCampaignData, loadTheTemplate, 
                                     dataForm.append("sender_email", newCampaignData.sender_email)
                                     dataForm.append("email_subject", newCampaignData.email_subject)
                                     dataForm.append("my_customer", store.getState().userData.id)
-                                    dataForm.append("camp_emails", 6)
+                                    dataForm.append("camp_emails", newCampaignData.camp_emails)
                                     dataForm.append("email_message", "will see")
                                     dataForm.append("temp_json", Jda)
                                     dataForm.append("ht", newCampaignData.ht)
@@ -133,9 +200,11 @@ const LoadedCampForm = ({ newCampaignData, setNewCampaignData, loadTheTemplate, 
                                     axios.put(`https://emailengine2020.herokuapp.com/camprud/${store.getState().loadedCampaign.campId}/`,
                                         dataForm
                                     ).then(res => {
-                                        // console.log(res)
-                                        // console.log("reached res")
+                                        console.log(res)
+                                        console.log("reached res")
+
                                         store.dispatch(updateCampaign(store.getState().userData.id))
+
                                         setTimeout(() => {
                                             setUpNexitButtonStyle({ text: "Done!", backgroundColor: "#365194ff" })
 

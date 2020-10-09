@@ -62,24 +62,10 @@ const CampForm = ({ newCampaignData, setNewCampaignData }) => {
                             </div>
                             <div className="subFieldLong Fields">
                                 <label htmlFor="emailList">Email Attachment</label>
-                                {/* <select id="camName" name="camName">
-                                <option value="NoEmailList">Please Create Email List</option>
-                            </select> */}
                                 <input type="file" id="emailList"
                                     onChange={e => setNewCampaignData({ ...newCampaignData, emailAttachment: e.target.files[0] })}
                                 />
                             </div>
-                            {/* <div className="subFieldLong Fields">*/}
-                            {/* <label htmlFor="emailBody">Email Body</label> */}
-                            {/* <select id="camName" name="camName">
-                                <option value="NoEmailList">Please Create Email List</option>
-                            </select> */}
-                            {/* <div id="emailBody" className="desBody Fields formButtonsCam"
-                                    onClick={() => push("/dashboard/newcamp/maileditor")}
-                                >
-                                    Deisgn Body
-                                </div> */}
-                            {/* </div> */}
                             <div className="subField Fields">
                                 <label htmlFor="emailLists">Email List</label>
                                 <select id="camName" name="camName"
