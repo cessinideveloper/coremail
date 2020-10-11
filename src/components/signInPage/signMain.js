@@ -1,11 +1,9 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useState } from 'react';
 import './signMain.css';
-import SignIn from './signIn'
-import SignUp from './signUp'
-import Google from './googleOAuth';
-import { ButtonPopRightLite } from '../../buttons';
-import { HashRouter, Route, Switch, withRouter } from 'react-router-dom'
-import { useHistory } from 'react-router-dom'
+import SignIn from './signIn/signIn'
+import SignUp from './signup/signUp'
+import { Route, Switch } from 'react-router-dom'
+
 
 function SignMain() {
 

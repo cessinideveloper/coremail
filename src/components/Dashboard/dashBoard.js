@@ -3,10 +3,10 @@ import { Route, Switch } from 'react-router-dom'
 import { useHistory } from 'react-router-dom'
 
 import './dashboard.css'
-import NavButtons from './navbuttons'
-import NewCam from './campaignHolder/newCampaign/newCam'
-import LoadedCamp from './campaignHolder/newCampaign/loadedCampaign'
-import EmailListUploader from './emailListHolder/emailListUploader'
+import TwoLists from './Email_Campaign_Lists/twoLists'
+import NewCam from './CreateCampaigns/newCam'//'../newCampaign/newCam'
+import LoadedCamp from './LoadedCampaigns/loadedCampaign'
+import EmailListForm from './CreateEmailList/emailListForm'
 import { useSpring, animated } from 'react-spring'
 
 const DashBoard = () => {
@@ -189,8 +189,8 @@ const DashBoard = () => {
                         <LoadedCamp></LoadedCamp>
                     }>
                     </Route>
-                    <Route path="/dashboard/newemaillist" render={() => <EmailListUploader></EmailListUploader>}></Route>
-                    <Route path="/dashboard" render={() => <NavButtons></NavButtons>}></Route>
+                    <Route path="/dashboard/newemaillist" render={() => <EmailListForm></EmailListForm>}></Route>
+                    <Route path="/dashboard" render={() => <TwoLists></TwoLists>}></Route>
                 </Switch>
             </div>
         </div>

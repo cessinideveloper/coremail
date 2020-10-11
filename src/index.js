@@ -3,18 +3,13 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './components/App';
 import * as serviceWorker from './serviceWorker';
-import { Provider } from 'react-redux';
-import { createStore } from 'redux';
-import reducers from './reducers'
-import { HashRouter, MemoryRouter, Route, Switch, withRouter } from 'react-router-dom'
+import { HashRouter, MemoryRouter } from 'react-router-dom'
 
 ReactDOM.render(
   <React.Fragment>
-    {/* <Provider store={createStore(reducers)}> */}
-    <MemoryRouter>
+    <HashRouter>
       <App></App>
-    </MemoryRouter>
-    {/* </Provider> */}
+    </HashRouter>
   </React.Fragment>,
   document.getElementById('root')
 );

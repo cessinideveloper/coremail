@@ -3,7 +3,7 @@ import React from 'react';
 import { Route, Switch } from 'react-router-dom'
 
 import './App.css';
-import SignMain from './signInPage/signMain';
+import SignMain from './SignInPage/signMain';
 import DashBoard from './Dashboard/dashBoard';
 
 function App() {
