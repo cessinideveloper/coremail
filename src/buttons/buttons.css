@@ -1,0 +1,102 @@
+.SVGcontainer {
+  /* border-style: dotted;
+    border-color: blueviolet; */
+  position: absolute;
+  top: 0%;
+  left: 0%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.buttonSVG {
+  /* border-style: dotted; */
+  position: absolute;
+  top: 0%;
+  left: 0%;
+  overflow: visible;
+}
+.Text {
+  position: absolute;
+  /* background-color: royalblue; */
+  width: 90%;
+  height: 90%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  left: 80%;
+  white-space: nowrap;
+  overflow: hidden;
+  font-family: Arial;
+  color: rgb(85, 85, 85);
+  top: 3%;
+}
+
+.buttonWrapper {
+  /* border-style: dotted;
+    border-color: blue; */
+  position: relative;
+}
+
+.eventDetector {
+  width: 100%;
+  height: 20%;
+  position: absolute;
+}
+
+.ten {
+  /* border-style: dotted; */
+  /* top: 10%;
+    left: 10%; */
+  position: absolute;
+}
+.tenSVG {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: visible;
+}
+.back {
+  position: relative;
+}
+.eventDetector2 {
+  /* border-style: dotted;
+  border-style: dotted;
+  border-color: indianred; */
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.svgHolder {
+  flex-grow: 1;
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-basis: 0;
+}
+
+.liteWrapper {
+  /* border-style: solid;
+  border-color: blueviolet; */
+  position: relative;
+  display: flex;
+}
+
+.infoWrapper {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  display: flex;
+}
+
+.textHolder {
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-basis: 0;
+  white-space: nowrap;
+  position: relative;
+  left: -5%;
+}
